@@ -1,0 +1,19 @@
+function ls_tag {
+	ct pwv | awk '{print $NF}' | tail -1
+}
+
+alias cdvobs="cd /view/$(ls_tag)/vobs"
+alias vscode="/home/oakeada/bin/VSCode-linux-x64/bin/code"
+
+function msv {
+	csv ${1%.*}
+}
+
+##Cleartool shorteners
+alias edcs="ct edcs"
+alias catcs="ct catcs"
+alias setcs="ct setcs"
+
+#string manipulation
+	#echo ${1#*-}
+		#this removes the hypen and characters preceding it from string $1

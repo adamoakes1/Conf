@@ -1,0 +1,115 @@
+ALIASES=/home/$USER/.aliases
+
+alias ls="ls+"
+alias ll="ls -al"
+alias l="ls -l"
+alias lh="ls -a"
+
+alias c="clear"
+alias x="exit"
+
+alias uprc="source /home/$USER/.bashrc"
+
+alias gateway="ip route | grep default"
+alias sshupdate="echo \"\" > /home/$USER/.ssh/known_hosts"
+
+alias addtopath="PATH=$PATH:$(pwd)"
+
+#ERRONEOUS INPUT HANDLERS
+alias LL="ls -al"
+alias L="ls -l"
+alias LH="ls -a"
+
+alias C="clear"
+alias X="exit" 
+
+alias UPRC="uprc"
+
+alias VIM="vim"
+alias QFIND="qfind"
+alias GET="get"
+alias CP="cp"
+
+alias fdsik="fdisk"
+
+function echo_os {
+	foo=$(lsb_release -i)
+	echo ${foo#*:}
+}
+
+function size {
+    du -s $1 | awk '{print $1;}'
+}
+
+## cp deluxe =) -- lets user see progress
+#note: must declare name of destination file -- will not auto set like cp cmd
+function cpd {
+    dd if=$1 ibs=1M status=none | pv -s `size $1` | dd of=$2 obs=1M status=none oflag=direct
+    chmod --reference=$1 $2
+}
+
+## cd deluxe
+function cdd {
+    cd $1
+    l
+}
+
+function liveUSB {
+        sudo dd if=$1 of=$2 bs=4M conv=fdatasync status=progress oflag=direct
+}
+
+function get {
+        cp $1 ./
+}
+
+function pretty_json {
+        $1 | python -m json.tool
+}
+
+function sh256chk {
+        echo "$1 *$2" | shasum -a 256 --check
+}
+
+function qfind {
+        find . -name $1
+}
+
+function tarNsend {
+    tar cfvz - $1 | nc 192.168.60.101 8888
+}
+
+##USER NOTES - USEFUL COMMANDS
+ #Add user to a group
+   #gpasswd -a <username> <groupname>
+ #Get OS version
+    #lsb_release -a
+ #Netcat send
+    #nc <ip> <port> < <filename>
+ #Netcat receive
+    #nc -l <port> > <filename>
+ #Netcat a whole directory
+    #tar cfvz - <directory> | nc <ip> <port>
+ #Get sizeof a file/directory
+    #du -sh <filename>
+ #untar a .gz file
+    #tar -xvzf
+ #string manipulation
+    #remove everything after & including last matching substring
+	#${string%substring*}
+		#e.g foo="letter" && echo ${foo%t*}
+		#will print "let"
+    #remove everything after & including first matching substring
+	#${string%%substring*}
+		#e.g foo="letter" && echo ${foo%%t*}
+		#will print "le"
+    #remove everything before & including first matching substring
+	#${string#*substring}
+		#e.g foo="letter" && echo ${foo#*t}
+		#will print "ter"
+    #remove everything before & including last matching substring
+	#${string##*substring}
+		#e.g foo="letter" && echo ${foo##*t}
+		#will print "le"
+    #manipulate string after a pipe
+	#echo letter | (read x; echo ${x%t*})
+	#will print "let"
